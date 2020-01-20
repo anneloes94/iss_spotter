@@ -25,7 +25,7 @@ fetchISSFlyOverTimes({ latitude: "43.8529285", longitude: "-79.3367422" }, (erro
   } else {
     console.log(data);
   }
-})
+});
 
 // ASK how to give ip dynamically to fetchCoordsByIP
 

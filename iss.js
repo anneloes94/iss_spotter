@@ -11,7 +11,7 @@ const fetchMyIP = (callback) => {
       return;
     } else {
       callback(null, ip);
-      return ip
+      return ip;
     }
   });
 };
@@ -19,25 +19,25 @@ const fetchMyIP = (callback) => {
 const fetchCoordsByIP = (ip, callback) => {
   request(`https://ipvigilante.com/${ip}`, (error, response, body) => {
   
-  const json_parsed = JSON.parse(body);
-    const lat = json_parsed.data.latitude;
-    const lng = json_parsed.data.longitude;
+    const jsonParsed = JSON.parse(body);
+    const lat = jsonParsed.data.latitude;
+    const lng = jsonParsed.data.longitude;
     const geo = {
       "latitude" : lat,
       "longitude" : lng
-    }
+    };
     if (error) {
       callback(error, null);
     } else if (response.statusCode !== 200) {
       const msg = `Status Code ${response.statusCode} when fetching geo location. Response: ${body}`;
-      callback(Error(msg), null)
+      callback(Error(msg), null);
       return;
     } else {
-      callback(null, geo )
+      callback(null, geo);
     }
   });
 
-}
+};
 
 /**
  * Makes a single API request to retrieve upcoming ISS fly over times the for the given lat/lng coordinates.
@@ -55,14 +55,14 @@ const fetchISSFlyOverTimes = function(coords, callback) {
       callback(error, null);
     } else if (response.statusCode !== 200) {
       const msg = `Status Code ${response.statusCode} when fetching geo location. Response: ${body}`;
-      callback(Error(msg), null)
+      callback(Error(msg), null);
       return;
     } else {
-      const response_parsed = JSON.parse(body).response;
-      let flyOvers = []
-      let counter = 0
-      for (element of response_parsed) {
-        const elementObject = {}
+      const responseParsed = JSON.parse(body).response;
+      let flyOvers = [];
+      let counter = 0;
+      for (let element of responseParsed) {
+        const elementObject = {};
         elementObject["risetime"] = element.risetime;
         elementObject["duration"] = element["duration"];
         flyOvers.push(elementObject);
@@ -70,7 +70,7 @@ const fetchISSFlyOverTimes = function(coords, callback) {
       }
       callback(null, flyOvers);
     }
-})
+  });
 };
 
 
