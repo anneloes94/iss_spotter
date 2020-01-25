@@ -64,4 +64,32 @@ const fetchISSFlyOverTimes = function(coords, callback) {
 };
 
 
-module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes };
+const nextISSTimesForMyLocation = function(callback) {
+  //first three functions take error, 
+  // so return right away if fetching ip goes wrong
+  fetchMyIP((error, ip) => {
+    if (error) {
+      return callback(error, null);
+    }
+
+    //now we have IP, so we continue cb with fetchCoords()
+    fetchCoordsByIP(ip, (error, geo) => {
+      if (error) {
+        return callback(error, null)
+      }
+
+      //now we have coords, so we continue with fetchFlyovers()
+      fetchISSFlyOverTimes(geo, (error, nextFlyovers) => {
+        if(error) {
+          return callback(error, null)
+        }
+
+        //now use these flyovers for your cb in index.js
+        callback(null, nextFlyovers)
+      })
+    })
+  })
+}
+
+
+module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation };
